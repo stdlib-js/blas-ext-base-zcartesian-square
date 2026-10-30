@@ -35,38 +35,32 @@ limitations under the License.
 
 > Compute the Cartesian square for a double-precision complex floating-point strided array.
 
+<section class="installation">
 
+## Installation
+
+```bash
+npm install @stdlib/blas-ext-base-zcartesian-square
+```
+
+Alternatively,
+
+-   To load the package in a website via a `script` tag without installation and bundlers, use the [ES Module][es-module] available on the [`esm`][esm-url] branch (see [README][esm-readme]).
+-   If you are using Deno, visit the [`deno`][deno-url] branch (see [README][deno-readme] for usage intructions).
+-   For use in Observable, or in browser/node environments, use the [Universal Module Definition (UMD)][umd] build available on the [`umd`][umd-url] branch (see [README][umd-readme]).
+
+The [branches.md][branches-url] file summarizes the available branches and displays a diagram illustrating their relationships.
+
+To view installation and usage instructions specific to each branch build, be sure to explicitly navigate to the respective README files on each branch, as linked to above.
+
+</section>
 
 <section class="usage">
 
 ## Usage
 
-To use in Observable,
-
 ```javascript
-zcartesianSquare = require( 'https://cdn.jsdelivr.net/gh/stdlib-js/blas-ext-base-zcartesian-square@umd/browser.js' )
-```
-
-To vendor stdlib functionality and avoid installing dependency trees for Node.js, you can use the UMD server build:
-
-```javascript
-var zcartesianSquare = require( 'path/to/vendor/umd/blas-ext-base-zcartesian-square/index.js' )
-```
-
-To include the bundle in a webpage,
-
-```html
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/blas-ext-base-zcartesian-square@umd/browser.js"></script>
-```
-
-If no recognized module system is present, access bundle contents via the global scope:
-
-```html
-<script type="text/javascript">
-(function () {
-    window.zcartesianSquare;
-})();
-</script>
+var zcartesianSquare = require( '@stdlib/blas-ext-base-zcartesian-square' );
 ```
 
 #### zcartesianSquare( order, N, x, strideX, out, LDO )
@@ -186,15 +180,10 @@ zcartesianSquare.ndarray( 2, x, 1, 2, out, 2, 1, 0 );
 
 <!-- eslint no-undef: "error" -->
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<body>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/random-array-discrete-uniform@umd/browser.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/array-complex128@umd/browser.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/blas-ext-base-zcartesian-square@umd/browser.js"></script>
-<script type="text/javascript">
-(function () {
+```javascript
+var discreteUniform = require( '@stdlib/random-array-discrete-uniform' );
+var Complex128Array = require( '@stdlib/array-complex128' );
+var zcartesianSquare = require( '@stdlib/blas-ext-base-zcartesian-square' );
 
 var N = 2;
 var xbuf = discreteUniform( N*2, 1, 10, {
@@ -206,11 +195,6 @@ console.log( x );
 var out = new Complex128Array( N * N * 2 );
 zcartesianSquare( 'row-major', N, x, 1, out, 2 );
 console.log( out );
-
-})();
-</script>
-</body>
-</html>
 ```
 
 </section>
@@ -219,7 +203,142 @@ console.log( out );
 
 <!-- C interface documentation. -->
 
+* * *
 
+<section class="c">
+
+## C APIs
+
+<!-- Section to include introductory text. Make sure to keep an empty line after the intro `section` element and another before the `/section` close. -->
+
+<section class="intro">
+
+</section>
+
+<!-- /.intro -->
+
+<!-- C usage documentation. -->
+
+<section class="usage">
+
+### Usage
+
+```c
+#include "stdlib/blas/ext/base/zcartesian_square.h"
+```
+
+#### stdlib_strided_zcartesian_square( order, N, \*X, strideX, \*Out, LDO )
+
+Computes the Cartesian square for a double-precision complex floating-point strided array.
+
+```c
+#include "stdlib/complex/float64/ctor.h"
+#include "stdlib/blas/base/shared.h"
+
+const double x[] = { 1.0, 2.0, 3.0, 4.0 };
+double out[ 16 ];
+
+stdlib_strided_zcartesian_square( CblasRowMajor, 2, (const stdlib_complex128_t *)x, 1, (stdlib_complex128_t *)out, 2 );
+```
+
+The function accepts the following arguments:
+
+-   **order**: `[in] CBLAS_LAYOUT` storage layout.
+-   **N**: `[in] CBLAS_INT` number of indexed elements.
+-   **X**: `[in] stdlib_complex128_t*` input array.
+-   **strideX**: `[in] CBLAS_INT` stride length for `X`.
+-   **Out**: `[out] stdlib_complex128_t*` output array.
+-   **LDO**: `[in] CBLAS_INT` stride length between successive contiguous vectors of the matrix `Out` (a.k.a., leading dimension of `Out`). For row-major order, must be greater than or equal to `2`. For column-major order, must be greater than or equal to `max(1,N*N)`.
+
+```c
+void stdlib_strided_zcartesian_square( const CBLAS_LAYOUT order, const CBLAS_INT N, const stdlib_complex128_t *X, const CBLAS_INT strideX, stdlib_complex128_t *Out, const CBLAS_INT LDO );
+```
+
+<!-- lint disable maximum-heading-length -->
+
+#### stdlib_strided_zcartesian_square_ndarray( N, \*X, strideX, offsetX, \*Out, strideOut1, strideOut2, offsetOut )
+
+<!-- lint enable maximum-heading-length -->
+
+Computes the Cartesian square for a double-precision complex floating-point strided array using alternative indexing semantics.
+
+```c
+const double x[] = { 1.0, 2.0, 3.0, 4.0 };
+double out[ 16 ];
+
+stdlib_strided_zcartesian_square_ndarray( 2, (const stdlib_complex128_t *)x, 1, 0, (stdlib_complex128_t *)out, 2, 1, 0 );
+```
+
+The function accepts the following arguments:
+
+-   **N**: `[in] CBLAS_INT` number of indexed elements.
+-   **X**: `[in] stdlib_complex128_t*` input array.
+-   **strideX**: `[in] CBLAS_INT` stride length for `X`.
+-   **offsetX**: `[in] CBLAS_INT` starting index for `X`.
+-   **Out**: `[out] stdlib_complex128_t*` output array.
+-   **strideOut1**: `[in] CBLAS_INT` stride length for the first dimension of `Out`.
+-   **strideOut2**: `[in] CBLAS_INT` stride length for the second dimension of `Out`.
+-   **offsetOut**: `[in] CBLAS_INT` starting index for `Out`.
+
+```c
+void stdlib_strided_zcartesian_square_ndarray( const CBLAS_INT N, const stdlib_complex128_t *X, const CBLAS_INT strideX, const CBLAS_INT offsetX, stdlib_complex128_t *Out, const CBLAS_INT strideOut1, const CBLAS_INT strideOut2, const CBLAS_INT offsetOut );
+```
+
+</section>
+
+<!-- /.usage -->
+
+<!-- C API usage notes. Make sure to keep an empty line after the `section` element and another before the `/section` close. -->
+
+<section class="notes">
+
+</section>
+
+<!-- /.notes -->
+
+<!-- C API usage examples. -->
+
+<section class="examples">
+
+### Examples
+
+```c
+#include "stdlib/blas/ext/base/zcartesian_square.h"
+#include "stdlib/complex/float64/ctor.h"
+#include "stdlib/blas/base/shared.h"
+#include <stdio.h>
+
+int main( void ) {
+    // Create a strided array of interleaved real and imaginary components:
+    const double x[] = { 1.0, 2.0, 3.0, 4.0 };
+
+    // Specify the number of indexed elements:
+    const int N = 2;
+
+    // Create an output array (N*N pairs, each pair has 2 elements):
+    double out[ 16 ];
+
+    // Specify strides:
+    const int strideX = 1;
+    const int LDO = 2;
+
+    // Compute the Cartesian square:
+    stdlib_strided_zcartesian_square( CblasRowMajor, N, (const stdlib_complex128_t *)x, strideX, (stdlib_complex128_t *)out, LDO );
+
+    // Print the result:
+    for ( int i = 0; i < N*N; i++ ) {
+        printf( "out[ %i ] = ( %lf+%lfi, %lf+%lfi )\n", i, out[ i*4 ], out[ (i*4)+1 ], out[ (i*4)+2 ], out[ (i*4)+3 ] );
+    }
+}
+```
+
+</section>
+
+<!-- /.examples -->
+
+</section>
+
+<!-- /.c -->
 
 <!-- Section for related `stdlib` packages. Do not manually edit this section, as it is automatically populated. -->
 
@@ -301,7 +420,7 @@ Copyright &copy; 2016-2026. The Stdlib [Authors][stdlib-authors].
 
 [stdlib-license]: https://raw.githubusercontent.com/stdlib-js/blas-ext-base-zcartesian-square/main/LICENSE
 
-[@stdlib/array/complex128]: https://github.com/stdlib-js/array-complex128/tree/umd
+[@stdlib/array/complex128]: https://github.com/stdlib-js/array-complex128
 
 [mdn-typed-array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
 
